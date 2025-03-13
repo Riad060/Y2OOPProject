@@ -1,31 +1,29 @@
 import java.util.Random;
 import java.util.Scanner;
+import ie.atu.study.MockDatabase;
+
+
 class Weapon {
+    private int move1MinDamage, move1MaxDamage, move2MinDamage, move2MaxDamage;
+    String name;
 
-        private int move1MinDamage;
-        private int move1MaxDamage;
-        private int move2MinDamage;
-        private int move2MaxDamage;
-        String name;
-
-        public Weapon(int move1MinDamage, int move1MaxDamage, int move2MinDamage, int move2MaxDamage , String name) {
-            this.move1MinDamage = move1MinDamage;
-            this.move1MaxDamage = move1MaxDamage;
-            this.move2MinDamage = move2MinDamage;
-            this.move2MaxDamage = move2MaxDamage;
-            this.name = name;
-        }
-
-        public int getMove1Damage() {
-            Random rand = new Random();
-            return rand.nextInt((move1MaxDamage - move1MinDamage) + 1) + move1MinDamage;
-        }
-
-        public int getMove2Damage() {
-            Random rand = new Random();
-            return rand.nextInt((move2MaxDamage - move2MinDamage) + 1) + move2MinDamage;
-        }
+    public Weapon(int move1MinDamage, int move1MaxDamage, int move2MinDamage, int move2MaxDamage , String name) {
+        this.move1MinDamage = move1MinDamage;
+        this.move1MaxDamage = move1MaxDamage;
+        this.move2MinDamage = move2MinDamage;
+        this.move2MaxDamage = move2MaxDamage;
+        this.name = name;
     }
+
+    public int getMove1Damage() {
+        return new Random().nextInt((move1MaxDamage - move1MinDamage) + 1) + move1MinDamage;
+    }
+
+    public int getMove2Damage() {
+        return new Random().nextInt((move2MaxDamage - move2MinDamage) + 1) + move2MinDamage;
+    }
+}
+
 class Sprite {
     String name;
     int health;
@@ -38,13 +36,7 @@ class Sprite {
     }
 
     public void attack(Sprite enemy, int move) {
-        int damage;
-        if(move == 1) {
-            damage = weapon.getMove1Damage();
-        }
-        else{
-            damage  = weapon.getMove2Damage();
-        }
+        int damage = (move == 1) ? weapon.getMove1Damage() : weapon.getMove2Damage();
         enemy.health -= damage;
         System.out.println(name + " attacks " + enemy.name + " for " + damage + " damage.");
     }
@@ -54,13 +46,25 @@ class Sprite {
     }
 }
 
-public class Main{
+public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Weapon sword = new Weapon(5, 15, 10, 20, "Sword");
-        Sprite player = new Sprite("Player", 100, sword);
-        //System.out.println("to enter inventory enter [i] ");
+        System.out.print("Enter your player name: ");
+        String playerName = scanner.nextLine();
 
+        // Load player from the mock database
+        int playerHealth = MockDatabase.loadPlayer(playerName);
+        if (playerHealth == -1) {
+            System.out.println("New player! Setting default health to 100.");
+            playerHealth = 100;
+            MockDatabase.savePlayer(playerName, playerHealth);
+        } else {
+            System.out.println("Welcome back, " + playerName + "! Your health: " + playerHealth);
+        }
+
+        // Create player and enemy
+        Weapon sword = new Weapon(5, 15, 10, 20, "Sword");
+        Sprite player = new Sprite(playerName, playerHealth, sword);
         Sprite enemy = new Sprite("Enemy", 80, sword);
 
         System.out.println("A wild enemy appears!");
@@ -84,7 +88,7 @@ public class Main{
                     break;
                 case 3:
                     System.out.println("You ran away!");
-                    break;
+                    return;
                 case 4:
                     System.out.println("\nWeapon equipped: " + player.weapon.name + " | Health: " + player.health);
                     break;
@@ -92,7 +96,8 @@ public class Main{
                     System.out.println("Invalid choice.");
                     break;
             }
-            if(choice == 1 || choice == 2) {
+
+            if (choice == 1 || choice == 2) {
                 if (enemy.isAlive()) {
                     enemy.attack(player, 1);
                 } else {
@@ -105,6 +110,9 @@ public class Main{
                 }
             }
         }
+
+        // Save player profile after combat
+        MockDatabase.savePlayer(playerName, player.health);
 
         scanner.close();
     }
