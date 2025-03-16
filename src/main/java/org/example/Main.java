@@ -76,7 +76,7 @@ public class Main {
             System.out.println("1. Attack1");
             System.out.println("2. Attack2");
             System.out.println("3. Run");
-            System.out.println("4. Inventory");
+            System.out.println("4. org.example.Inventory");
 
             int choice = scanner.nextInt();
             switch (choice) {
