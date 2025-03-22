@@ -112,23 +112,23 @@ class Weapon {
 
 class Sprite {
     String name;
-    int health;
     Weapon weapon;
+    Weapon.Inventory inventory;
 
-    public Sprite(String name, int health, Weapon weapon) {
+    public Sprite(String name, Weapon.Inventory inventory, Weapon weapon) {
         this.name = name;
-        this.health = health;
+        this.inventory = inventory;
         this.weapon = weapon;
     }
 
     public void attack(Sprite enemy, int move) {
         int damage = (move == 1) ? weapon.getMove1Damage() : weapon.getMove2Damage();
-        enemy.health -= damage;
+        enemy.inventory.health -= damage;
         System.out.println(name + " attacks " + enemy.name + " for " + damage + " damage.");
     }
 
     public boolean isAlive() {
-        return health > 0;
+        return inventory.health > 0;
     }
 }
 
@@ -153,14 +153,14 @@ public class Main {
 
         // Create player and enemy with shared inventory
         Weapon sword = new Weapon(5, 15, 10, 20, "Sword");
-        Sprite player = new Sprite(playerName, in1.health, sword); // Share inventory
-        Sprite enemy = new Sprite("Enemy", 80, sword); // Enemy has its own inventory
+        Sprite player = new Sprite(playerName, in1, sword); // Share inventory
+        Sprite enemy = new Sprite("Enemy", new Weapon.Inventory(), sword); // Enemy has its own inventory
 
         System.out.println("A wild enemy appears!");
 
         while (player.isAlive() && enemy.isAlive()) {
             System.out.println("\nPlayer Health: " + in1.health);
-            System.out.println("Enemy Health: " + enemy.health);
+            System.out.println("Enemy Health: " + enemy.inventory.health);
             System.out.println("Choose an action:");
             System.out.println("1. Attack1");
             System.out.println("2. Attack2");
