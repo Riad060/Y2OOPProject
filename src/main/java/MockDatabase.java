@@ -1,5 +1,3 @@
-package ie.atu.study;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;

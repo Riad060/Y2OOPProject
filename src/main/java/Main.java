@@ -1,9 +1,5 @@
-package org.example;
-
 import java.util.Random;
 import java.util.Scanner;
-import ie.atu.study.MockDatabase;
-
 
 
 class Weapon {
@@ -146,6 +142,11 @@ class Sprite {
 public class Main {
 
     public static void main(String[] args) {
+
+        DatabaseManager data = new DatabaseManager();
+        Weapon test = data.getWeapon(1);
+        System.out.println(test);
+
 
         Weapon.Inventory in1 = new Weapon.Inventory();
         in1.start();
