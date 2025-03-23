@@ -9,20 +9,26 @@ public class DatabaseManager {
     private String dbpass = "password";
 
     public Sprite getPlayer(String username){
-        Sprite player = null;
         try (Connection conn = DriverManager.getConnection(url, dbuser, dbpass)){
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM players WHERE username LIKE ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM player WHERE user_name LIKE ?");
             stmt.setString(1, username);
             ResultSet results = stmt.executeQuery();
 
-            if(results != null){
-                conn.close();
-                return player;
+            if(results.next()){
+                Weapon currnet = getWeapon(results.getInt("current_weapon"));
+                if (currnet == null) {
+                    //If somehow weapon is not found in the DB.
+                    currnet = new Weapon(1, 1, 1, 1, "Fists");
+                }
+                int health = results.getInt("health");
+
+                return new Sprite(username, health, currnet);
             }
 
-            return player;
+            return null;
         } catch (Exception e){
-            return player;
+            System.out.println(e);
+            return null;
         }
     }
 
@@ -30,7 +36,7 @@ public class DatabaseManager {
 
     public Weapon getWeapon(int weapon_id){
         try (Connection conn = DriverManager.getConnection(url, dbuser, dbpass)){
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM weapons WHERE weapon_id = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM weapon WHERE id = ?");
             stmt.setInt(1, weapon_id);
             ResultSet results = stmt.executeQuery();
 
