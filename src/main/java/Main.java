@@ -1,9 +1,5 @@
-package org.example;
-
 import java.util.Random;
 import java.util.Scanner;
-import ie.atu.study.MockDatabase;
-
 
 
 class Weapon {
@@ -27,7 +23,7 @@ class Weapon {
     }
 
     public static class Inventory {
-        public int health=100;
+        private int health=100;
         private int maxHealth=100;
         private int healthPotions=3;
         private String currentWeapon="Sword";
@@ -36,7 +32,18 @@ class Weapon {
         private Scanner sc = new Scanner(System.in);
 
         //need to change this when adding into main code
+        public  void start() {
+            System.out.println("Game has started");
+            while(running){//will have to change to after a battle? or somethijng
+                System.out.println("Press 'I' to open the inventory");
+                String input = sc.nextLine();
 
+                if(input.equals("I")){
+                    OpenInventory();
+                }
+            }
+
+        }
         public void OpenInventory(){
             while(true){
             System.out.println(" Inventory ");
@@ -55,7 +62,7 @@ class Weapon {
                     switchWeapon();
                     break;
                 case "3":
-                    //quitGame();
+                    quitGame();
                     return;
                default:
                    System.out.println("Invalid choice");
@@ -112,60 +119,61 @@ class Weapon {
 
 class Sprite {
     String name;
+    int health;
     Weapon weapon;
-    Weapon.Inventory inventory;
 
-    public Sprite(String name, Weapon.Inventory inventory, Weapon weapon) {
+    public Sprite(String name, int health, Weapon weapon) {
         this.name = name;
-        this.inventory = inventory;
+        this.health = health;
         this.weapon = weapon;
     }
 
     public void attack(Sprite enemy, int move) {
         int damage = (move == 1) ? weapon.getMove1Damage() : weapon.getMove2Damage();
-        enemy.inventory.health -= damage;
+        enemy.health -= damage;
         System.out.println(name + " attacks " + enemy.name + " for " + damage + " damage.");
     }
 
     public boolean isAlive() {
-        return inventory.health > 0;
+        return health > 0;
     }
 }
 
 public class Main {
+
     public static void main(String[] args) {
-        Weapon.Inventory in1 = new Weapon.Inventory(); // Shared inventory instance
+        Weapon.Inventory in1 = new Weapon.Inventory();
+        in1.start();
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your player name: ");
         String playerName = scanner.nextLine();
 
-        // Load player health
+        // Load player from the mock database
         int playerHealth = MockDatabase.loadPlayer(playerName);
         if (playerHealth == -1) {
             System.out.println("New player! Setting default health to 100.");
-            in1.health = 100;
-            MockDatabase.savePlayer(playerName, in1.health);
+            playerHealth = 100;
+            MockDatabase.savePlayer(playerName, playerHealth);
         } else {
-            in1.health = playerHealth;
-            System.out.println("Welcome back, " + playerName + "! Your health: " + in1.health);
+            System.out.println("Welcome back, " + playerName + "! Your health: " + playerHealth);
         }
 
-        // Create player and enemy with shared inventory
+        // Create player and enemy
         Weapon sword = new Weapon(5, 15, 10, 20, "Sword");
-        Sprite player = new Sprite(playerName, in1, sword); // Share inventory
-        Sprite enemy = new Sprite("Enemy", new Weapon.Inventory(), sword); // Enemy has its own inventory
+        Sprite player = new Sprite(playerName, playerHealth, sword);
+        Sprite enemy = new Sprite("Enemy", 80, sword);
 
         System.out.println("A wild enemy appears!");
 
         while (player.isAlive() && enemy.isAlive()) {
-            System.out.println("\nPlayer Health: " + in1.health);
-            System.out.println("Enemy Health: " + enemy.inventory.health);
+            System.out.println("\nPlayer Health: " + player.health);
+            System.out.println("Enemy Health: " + enemy.health);
             System.out.println("Choose an action:");
             System.out.println("1. Attack1");
             System.out.println("2. Attack2");
             System.out.println("3. Run");
-            System.out.println("4. Open Inventory");
+            System.out.println("4. Weapon.Inventory");
 
             int choice = scanner.nextInt();
             switch (choice) {
@@ -179,7 +187,9 @@ public class Main {
                     System.out.println("You ran away!");
                     return;
                 case 4:
-                    in1.OpenInventory(); // Player heals inside inventory
+                    in1.OpenInventory();
+
+                    System.out.println("\nWeapon equipped: " + player.weapon.name + " | Health: " + player.health);
                     break;
                 default:
                     System.out.println("Invalid choice.");
@@ -200,8 +210,9 @@ public class Main {
             }
         }
 
-        // Save health after battle
-        MockDatabase.savePlayer(playerName, in1.health);
+        // Save player profile after combat
+        MockDatabase.savePlayer(playerName, player.health);
+
         scanner.close();
     }
 }
