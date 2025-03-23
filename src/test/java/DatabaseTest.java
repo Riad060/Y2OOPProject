@@ -13,12 +13,23 @@ public class DatabaseTest {
     }
 
     @Test
-    void TestgetWeaponFAIL(){
+    void Test_getWeaponFAIL(){
         assertNull(Database.getWeapon(1002));
     }
 
     @Test
-    void TestgetWeaponPASS(){
+    void Test_getWeaponPASS(){
         assertNotNull(Database.getWeapon(1));
     }
+
+    @Test
+    void Test_getPlayernFAIL(){
+        assertNull(Database.getPlayer("NotReal"));
+    }
+
+    @Test
+    void Test_getPlayerPASS(){
+        assertNotNull(Database.getPlayer("John"));
+    }
+
 }
