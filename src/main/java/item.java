@@ -14,5 +14,6 @@ public class item {
     public void use() {
         System.out.println("Using " + name);
     }
+
 }
 
