@@ -4,7 +4,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Weapon.Inventory in1 = new Weapon.Inventory();
+        Inventory in1 = new Inventory();
         in1.start();
 
         Scanner scanner = new Scanner(System.in);
