@@ -8,6 +8,7 @@ public class DatabaseManager {
     private String dbuser = "root";
     private String dbpass = "password";
 
+
     public Sprite getPlayer(String username){
         try (Connection conn = DriverManager.getConnection(url, dbuser, dbpass)){
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM player WHERE user_name LIKE ?");
@@ -54,6 +55,30 @@ public class DatabaseManager {
 
         } catch (Exception e){
             return null;
+        }
+    }
+
+    public Weapon getRandomWeapon(){
+        Weapon defaultWeapon = new Weapon(1, 1, 1, 1, "NotReal");
+        try (Connection conn = DriverManager.getConnection(url, dbuser, dbpass)){
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM weapon ORDER BY RAND() LIMIT 1");
+            ResultSet results = stmt.executeQuery();
+
+            if (results.next()){
+                String name = results.getString("name");
+                int cost = results.getInt("cost");
+                int Move1Max = results.getInt("move1Max");
+                int Move1Min = results.getInt("move1Min");
+                int Move2Max = results.getInt("move2Max");
+                int Move2Min = results.getInt("move2Min");
+
+                return new Weapon(Move1Min, Move1Max, Move2Min, Move2Max, name);
+            }
+
+            return defaultWeapon;
+
+        } catch (Exception e){
+            return defaultWeapon;
         }
     }
 

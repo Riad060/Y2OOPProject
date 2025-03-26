@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Weapon {
     private int move1MinDamage, move1MaxDamage, move2MinDamage, move2MaxDamage;
-    String name;
+    public String name;
 
     public Weapon(int move1MinDamage, int move1MaxDamage, int move2MinDamage, int move2MaxDamage, String name) {
         this.move1MinDamage = move1MinDamage;
