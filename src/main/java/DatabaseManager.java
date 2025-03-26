@@ -28,10 +28,11 @@ public class DatabaseManager {
 
             return null;
         } catch (Exception e){
-            System.out.println(e);
+
             return null;
         }
     }
+
 
 
 
