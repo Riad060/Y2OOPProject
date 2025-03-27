@@ -25,6 +25,8 @@ public class Main {
         Weapon sword = new Weapon(5, 15, 10, 20, "Sword");
         Sprite player = new Sprite(playerName, playerHealth, sword);
         Sprite enemy = new Sprite("Enemy", 80, sword);
+        Weapon.Inventory in1 = new Weapon.Inventory(player);
+        //Weapon.Inventory in1 = new Weapon.Inventory(sword);
 
         System.out.println("A wild enemy appears!");
 
@@ -36,6 +38,7 @@ public class Main {
             System.out.println("2. Attack2");
             System.out.println("3. Run");
             System.out.println("4. Weapon.Inventory");
+            System.out.println("5.Open Shop");
 
             int choice = scanner.nextInt();
             switch (choice) {
@@ -53,7 +56,11 @@ public class Main {
 
                     System.out.println("\nWeapon equipped: " + player.weapon.name + " | Health: " + player.health);
                     break;
+                case 5:
+                    in1.OpenShop();
+                    break;
                 default:
+
                     System.out.println("Invalid choice.");
                     break;
             }
@@ -77,4 +84,7 @@ public class Main {
 
         scanner.close();
     }
+
+
+
 }

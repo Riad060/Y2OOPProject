@@ -5,6 +5,9 @@ public class Weapon {
     private int move1MinDamage, move1MaxDamage, move2MinDamage, move2MaxDamage;
     public String name;
 
+
+
+
     public Weapon(int move1MinDamage, int move1MaxDamage, int move2MinDamage, int move2MaxDamage, String name) {
         this.move1MinDamage = move1MinDamage;
         this.move1MaxDamage = move1MaxDamage;
@@ -23,5 +26,6 @@ public class Weapon {
     public int getMove2Damage() {
         return new Random().nextInt((move2MaxDamage - move2MinDamage) + 1) + move2MinDamage;
     }
-
 }
+
+//}
