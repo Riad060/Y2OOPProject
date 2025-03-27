@@ -4,8 +4,6 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Inventory in1 = new Inventory();
-        in1.start();
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your player name: ");
@@ -25,7 +23,7 @@ public class Main {
         Weapon sword = new Weapon(5, 15, 10, 20, "Sword");
         Sprite player = new Sprite(playerName, playerHealth, sword);
         Sprite enemy = new Sprite("Enemy", 80, sword);
-        Weapon.Inventory in1 = new Weapon.Inventory(player);
+        Inventory in1 = new Inventory(player);
         //Weapon.Inventory in1 = new Weapon.Inventory(sword);
 
         System.out.println("A wild enemy appears!");

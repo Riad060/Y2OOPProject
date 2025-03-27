@@ -7,17 +7,30 @@ public class Inventory {
     private String currentWeapon = "Sword";
     private boolean running = true;//used for the quit option in Inventory
 
+    private Sprite player;
+    // Constructor to pass player reference
+    public Inventory(Sprite player) {
+        this.player = player;
+    }
+
+
+
+
     private Scanner sc = new Scanner(System.in);
+    private Scanner sc2 = new Scanner(System.in);
 
     //need to change this when adding into main code
     public void start() {
         System.out.println("Game has started");
         while (running) {//will have to change to after a battle? or somethijng
             System.out.println("Press 'I' to open the inventory");
+            System.out.println("Press 'S' to open the shop");
             String input = sc.nextLine();
 
             if (input.equals("I")) {
                 OpenInventory();
+            } else if (input.equals("S")) {
+                OpenShop();
             }
         }
 
@@ -52,7 +65,7 @@ public class Inventory {
 
     //uses health potions to heal, will have to decide how the user actually gets the potions
     private void heal() {
-        if (healthPotions > 0) {
+        if (player.getHealthPotions() > 0) {
             if (health < maxHealth) {
                 health = Math.min(health + 30, maxHealth);
                 healthPotions--;
@@ -90,6 +103,40 @@ public class Inventory {
     private void quitGame() {
         System.out.println("You have quit the game");
         running = false;
+    }
+    public void OpenShop() {
+        while(true){
+            System.out.println("You have entered the shop");
+            System.out.println("1. Hp potion Cost: 10 coins");
+            System.out.println("2. Upgrade Weapon: 20 coins");
+            System.out.println("3. Leave Shop");
+            System.out.println("You have "+player.getCoins()+"Coins");
+            String choice=sc2.nextLine();
+            switch(choice){
+                case "1":
+                    buyHealthPotion();
+                    break;
+                case "2":
+                    //upgradeWeapon();
+                    break;
+                case "3":
+                    System.out.println("You have left the shop");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Pick a number 1-3");
+            }
+        }
+    }
+
+    private void buyHealthPotion() {
+        if (player.getCoins() >= 10) {
+            player.setCoins(player.getCoins() - 10);
+            player.setHealthPotions(player.getHealthPotions() + 1);
+            System.out.println("You now have " + player.getHealthPotions());
+        } else {
+            System.out.println("You have not enough coins to buy health potions");
+        }
+
     }
 
 
