@@ -1,8 +1,8 @@
-/*import java.util.Scanner;
+import java.util.Scanner;
 
 public class Shop {
     private Scanner sc2=new Scanner(System.in);
-    private Weapon player;
+    private Sprite player;
     private boolean running = true;
 
 
@@ -62,6 +62,6 @@ public class Shop {
         }
     }
 
-}*/
+}
 
 
