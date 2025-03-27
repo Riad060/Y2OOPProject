@@ -1,27 +1,39 @@
 public class Sprite {
-    String name;
-    int health;
-    Weapon weapon;
+    private String name;
+    private int health;
+    private Weapon weapon;
+    private int coins;
+    private int healthPotions;
 
     public Sprite(String name, int health, Weapon weapon) {
         this.name = name;
         this.health = health;
         this.weapon = weapon;
+        this.coins = 0;
+        this.healthPotions = 0;
     }
 
     public void attack(Sprite enemy, int move) {
-        int damage = (move == 1) ? weapon.getMove1Damage() : weapon.getMove2Damage();
+        int damage;
+        if (move == 1) {
+            damage = weapon.getMove1Damage();
+        } else {
+            damage = weapon.getMove2Damage();
+        }
         enemy.health -= damage;
         System.out.println(name + " attacks " + enemy.name + " for " + damage + " damage.");
     }
-    private int healthPotions = 3;
-    private int Coins=30;
+
+    public boolean isAlive() {
+        return health > 0;
+    }
+
     public int getCoins() {
-        return Coins;
+        return coins;
     }
 
     public void setCoins(int coins) {
-        this.Coins = coins;
+        this.coins = coins;
     }
 
     public int getHealthPotions() {
@@ -32,7 +44,47 @@ public class Sprite {
         this.healthPotions = healthPotions;
     }
 
-    public boolean isAlive() {
-        return health > 0;
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void subtractCoins() {
+        coins -= 10;
+        if (coins < 0) coins = 0;
+    }
+
+    public void subtractCoins(int amount) {
+        coins -= amount;
+        if (coins < 0) coins = 0;
+    }
+
+    public void addCoins(int amount) {
+        coins += amount;
+    }
+
+    public void useHealthPotion() {
+        if (healthPotions > 0) {
+            health = 100;
+            healthPotions--;
+            System.out.println("🧪 Used an HP potion. Your health is fully restored!");
+        } else {
+            System.out.println("❌ You have no HP potions.");
+        }
     }
 }
