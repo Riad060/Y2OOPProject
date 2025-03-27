@@ -4,11 +4,8 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-
-
-
-
-
+        Inventory in1 = new Inventory();
+        in1.start();
 
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your player name: ");
