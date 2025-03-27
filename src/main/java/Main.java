@@ -1,44 +1,49 @@
 import java.util.Scanner;
 
-
 public class Main {
-
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your player name: ");
         String playerName = scanner.nextLine();
 
-        // Load player from the mock database
-        int playerHealth = MockDatabase.loadPlayer(playerName);
+        // Load or create player
+        int playerHealth = MockDatabase.loadPlayerHealth(playerName);
+        int playerCoins = MockDatabase.loadPlayerCoins(playerName);
+
         if (playerHealth == -1) {
             System.out.println("New player! Setting default health to 100.");
             playerHealth = 100;
-            MockDatabase.savePlayer(playerName, playerHealth);
+            playerCoins = 0;
+            MockDatabase.savePlayer(playerName, playerHealth, playerCoins);
         } else {
             System.out.println("Welcome back, " + playerName + "! Your health: " + playerHealth);
+            System.out.println("💰 You have " + playerCoins + " coins.");
         }
 
         // Create player and enemy
         Weapon sword = new Weapon(5, 15, 10, 20, "Sword");
         Sprite player = new Sprite(playerName, playerHealth, sword);
+        player.setCoins(playerCoins); // Load coins into player object
         Sprite enemy = new Sprite("Enemy", 80, sword);
+
         Inventory in1 = new Inventory(player);
-        //Weapon.Inventory in1 = new Weapon.Inventory(sword);
+        Shop shop = new Shop(player); // link shop
 
         System.out.println("A wild enemy appears!");
 
         while (player.isAlive() && enemy.isAlive()) {
-            System.out.println("\nPlayer Health: " + player.health);
-            System.out.println("Enemy Health: " + enemy.health);
+            System.out.println("\nPlayer Health: " + player.getHealth());
+            System.out.println("Enemy Health: " + enemy.getHealth());
             System.out.println("Choose an action:");
             System.out.println("1. Attack1");
             System.out.println("2. Attack2");
             System.out.println("3. Run");
-            System.out.println("4. Weapon.Inventory");
-            System.out.println("5.Open Shop");
+            System.out.println("4. Weapon Inventory");
+            System.out.println("5. Open Shop");
+            System.out.println("6. Use HP Potion");
 
             int choice = scanner.nextInt();
+            scanner.nextLine(); // clear newline
             switch (choice) {
                 case 1:
                     player.attack(enemy, 1);
@@ -51,14 +56,16 @@ public class Main {
                     return;
                 case 4:
                     in1.OpenInventory();
-
-                    System.out.println("\nWeapon equipped: " + player.weapon.name + " | Health: " + player.health);
+                    System.out.println("\nWeapon equipped: " + player.getWeapon().getName()
+                            + " | Health: " + player.getHealth());
                     break;
                 case 5:
-                    in1.OpenShop();
+                    shop.shopMenu(); // 💰 opens the shop
+                    break;
+                case 6:
+                    player.useHealthPotion();
                     break;
                 default:
-
                     System.out.println("Invalid choice.");
                     break;
             }
@@ -68,21 +75,23 @@ public class Main {
                     enemy.attack(player, 1);
                 } else {
                     System.out.println("You defeated the enemy!");
+                    player.addCoins(10);
+                    System.out.println("💰 You earned 10 coins!");
                     break;
                 }
 
                 if (!player.isAlive()) {
                     System.out.println("You were defeated by the enemy.");
+                    player.subtractCoins();
+                    System.out.println("💀 You lost 10 coins.");
+                    player.setHealth(100); // reset health
+                    break;
                 }
             }
         }
 
-        // Save player profile after combat
-        MockDatabase.savePlayer(playerName, player.health);
-
+        // Save final player state
+        MockDatabase.savePlayer(playerName, player.getHealth(), player.getCoins());
         scanner.close();
     }
-
-
-
 }

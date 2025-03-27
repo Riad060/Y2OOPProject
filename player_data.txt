@@ -1,8 +1,2 @@
-1,61
-q,100
-ar,100
-fionn,100
-test,100
-Test,100
-Pf,42
-Cathal,100
+Fionn,2,10
+David,-9,0

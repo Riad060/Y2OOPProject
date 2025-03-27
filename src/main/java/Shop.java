@@ -1,67 +1,64 @@
 import java.util.Scanner;
 
 public class Shop {
-    private Scanner sc2=new Scanner(System.in);
+    private Scanner sc2 = new Scanner(System.in);
     private Sprite player;
-    private boolean running = true;
 
+    public Shop(Sprite player) {
+        this.player = player;
+    }
 
-
-    //public Shop(Weapon player) {
-        //this.player=player;
-   // }
-    public void shopMenu(){
-        while(true){
-            System.out.println("You have entered the shop");
-            System.out.println("1. Hp potion Cost: 10 coins");
-            System.out.println("2. Upgrade Weapon: 20 coins");
+    public void shopMenu() {
+        boolean inShop = true;
+        while (inShop) {
+            System.out.println("\n\uD83D\uDED2 You have entered the shop!");
+            System.out.println("1. Buy HP Potion (10 coins)");
+            System.out.println("2. Upgrade Weapon (20 coins)");
             System.out.println("3. Leave Shop");
-            System.out.println("You have "+player.getCoins()+"Coins");
+            System.out.println("\uD83D\uDCB0 You have " + player.getCoins() + " coins.");
 
-            String choice=sc2.nextLine();
-            switch(choice){
+            String choice = sc2.nextLine();
+            switch (choice) {
                 case "1":
                     buyHealthPotion();
                     break;
                 case "2":
-                    //upgradeWeapon();
+                    upgradeWeapon();
                     break;
                 case "3":
-                    System.out.println("You have left the shop");
+                    System.out.println("\uD83D\uDEAA You have left the shop.");
+                    inShop = false;
                     break;
                 default:
-                    System.out.println("Invalid choice. Pick a number 1-3");
-            }
-
-
-
-
-        }
-    }
-
-
-    private void buyHealthPotion(){
-        if(player.getCoins() >=10){
-            player.setCoins(player.getCoins()-10);
-            player.setHealthPotions(player.getHealthPotions()+1);
-            System.out.println("You now have "+player.getHealthPotions());
-        }
-        else{
-            System.out.println("You have not enough coins to buy health potions");
-        }
-    }
-    public void startGame() {
-        System.out.println("Welcome to the text-based game!");
-        while (running) { // Keeps running until the player chooses to quit
-            System.out.println("Press 'I' to open your inventory.");
-            String input = sc2.nextLine().trim().toUpperCase(); // Reads and normalizes input
-
-            if (input.equals("S")) {
-                shopMenu(); // Opens inventory if 'I' is pressed
+                    System.out.println("❌ Invalid choice. Pick a number 1-3.");
             }
         }
     }
 
+    private void buyHealthPotion() {
+        if (player.getCoins() >= 10) {
+            player.setCoins(player.getCoins() - 10);
+            player.setHealthPotions(player.getHealthPotions() + 1);
+            System.out.println("✅ Bought 1 HP potion. You now have " + player.getHealthPotions() + ".");
+            player.useHealthPotion(); // instantly use potion
+        } else {
+            System.out.println("❌ Not enough coins to buy health potions.");
+        }
+    }
+
+    private void upgradeWeapon() {
+        if (player.getCoins() >= 20) {
+            player.setCoins(player.getCoins() - 20);
+            Weapon weapon = player.getWeapon();
+            weapon.upgrade();
+            System.out.println("\uD83D\uDD27 Weapon upgraded!");
+        } else {
+            System.out.println("❌ Not enough coins to upgrade weapon.");
+        }
+    }
 }
+
+
+
 
 
