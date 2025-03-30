@@ -83,6 +83,23 @@ public class DatabaseManager {
         }
     }
 
+
+    public int savePlayer(String player, int health, int coins){
+        try (Connection conn = DriverManager.getConnection(url, dbuser, dbpass)){
+            PreparedStatement stmt = conn.prepareStatement("REPLACE INTO player VALUES (?, ?, ?, ?)");
+            stmt.setString(1, player);
+            stmt.setInt(2, coins);
+            stmt.setInt(3, 1);
+            stmt.setInt(4, health);
+            stmt.executeQuery();
+
+            return 1;
+
+        } catch (Exception e){
+            return 0;
+        }
+    }
+
 }
 
 
