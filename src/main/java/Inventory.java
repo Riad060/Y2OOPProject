@@ -13,9 +13,6 @@ public class Inventory {
         this.player = player;
     }
 
-
-
-
     private Scanner sc = new Scanner(System.in);
     private Scanner sc2 = new Scanner(System.in);
 
@@ -39,7 +36,7 @@ public class Inventory {
     public void OpenInventory() {
         while (true) {
             System.out.println(" Inventory ");
-            System.out.println("1. Heal (" + healthPotions + " Potions)");
+            System.out.println("1. Heal (" + player.getHealthPotions() + " Potions)");
             System.out.println("2. Switch Weapons (Currently equipped " + currentWeapon + ")");
             System.out.println("3. Exit");
             System.out.println("Enter your choice 1-3");
@@ -48,7 +45,7 @@ public class Inventory {
 
             switch (choice) {
                 case "1":
-                    heal();
+                    player.useHealthPotion();
                     break;
                 case "2":
                     switchWeapon();

@@ -38,9 +38,9 @@ public class Shop {
     private void buyHealthPotion() {
         if (player.getCoins() >= 10) {
             player.setCoins(player.getCoins() - 10);
-            player.setHealthPotions(player.getHealthPotions() + 1);
+            player.setHealthPotions(player.getHealthPotions()+1);
             System.out.println("✅ Bought 1 HP potion. You now have " + player.getHealthPotions() + ".");
-            player.useHealthPotion(); // instantly use potion
+            //player.useHealthPotion(); // instantly use potion
         } else {
             System.out.println("❌ Not enough coins to buy health potions.");
         }
