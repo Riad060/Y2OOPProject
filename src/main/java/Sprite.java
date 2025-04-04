@@ -13,15 +13,15 @@ public class Sprite {
         this.healthPotions = 0;
     }
 
-    public void attack(Sprite enemy, int move) {
+    public void attack(enemy enemy, int move) {
         int damage;
         if (move == 1) {
             damage = weapon.getMove1Damage();
         } else {
             damage = weapon.getMove2Damage();
         }
-        enemy.health -= damage;
-        System.out.println(name + " attacks " + enemy.name + " for " + damage + " damage.");
+        enemy.setHealth(enemy.getHealth()-damage); ;
+        System.out.println(name + " attacks " + enemy.getName() + " for " + damage + " damage.");
     }
 
     public boolean isAlive() {

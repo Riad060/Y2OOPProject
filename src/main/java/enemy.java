@@ -1,12 +1,12 @@
 public class enemy {
-    private String name = "";
-    private int health = 80;
+    private String name;
+    private int health;
+    private Weapon weapon;
 
-    public enemy(String name, int health, Weapon weapon){
+    public enemy(String name, int health, Weapon weapon) {
         this.name = name;
         this.health = health;
         this.weapon = weapon;
-
     }
 
     public String getName() {
@@ -33,6 +33,20 @@ public class enemy {
         this.weapon = weapon;
     }
 
-    private Weapon weapon;
+    // Attack method now takes Sprite as the parameter
+    public void attack(Sprite sprite, int move) {
+        int damage;
+        if (move == 1) {
+            damage = weapon.getMove1Damage();
+        } else {
+            damage = weapon.getMove2Damage();
+        }
 
+        sprite.setHealth(sprite.getHealth() - damage); // Adjust the player's health
+        System.out.println(name + " attacks " + sprite.getName() + " for " + damage + " damage.");
+    }
+
+    public boolean isAlive() {
+        return health > 0;
+    }
 }
