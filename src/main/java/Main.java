@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Main {
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter your player name: ");
@@ -29,7 +28,7 @@ public class Main {
 
         Inventory in1 = new Inventory(player);
         Shop shop = new Shop(player); // link shop
-        while(true) {
+        while (true) {
 
             System.out.println("A wild enemy appears!");
             enemy.setHealth(80);
@@ -66,8 +65,8 @@ public class Main {
                         shop.shopMenu(); // 💰 opens the shop
                         break;
                     //case 6:
-                        //player.useHealthPotion();
-                        //break;
+                    //player.useHealthPotion();
+                    //break;
                     default:
                         System.out.println("Invalid choice.");
                         break;
@@ -95,7 +94,6 @@ public class Main {
 
             // Save final player state
             MockDatabase.savePlayer(playerName, player.getHealth(), player.getCoins());
+            scanner.close();
         }
-        //scanner.close();
-    }
-}
+    }}

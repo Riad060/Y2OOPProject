@@ -1,4 +1,4 @@
-public class Potion extends Item {
+public class Potion extends item {
     private int healAmount;
 
     public Potion(String name, int healAmount) {

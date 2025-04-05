@@ -51,7 +51,7 @@ public class Inventory {
                     switchWeapon();
                     break;
                 case "3":
-                    quitGame();
+                    //quitGame();
                     return;
                 default:
                     System.out.println("Invalid choice");
