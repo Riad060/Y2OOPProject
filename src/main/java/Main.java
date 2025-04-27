@@ -1,32 +1,25 @@
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        DatabaseManager db = new DatabaseManager();
         System.out.print("Enter your player name: ");
         String playerName = scanner.nextLine();
 
-        // Load or create player
-        int playerHealth = MockDatabase.loadPlayerHealth(playerName);
-        int playerCoins = MockDatabase.loadPlayerCoins(playerName);
-
-        if (playerHealth == -1) {
-            System.out.println("New player! Setting default health to 100.");
-            playerHealth = 100;
-            playerCoins = 0;
-            MockDatabase.savePlayer(playerName, playerHealth, playerCoins);
+        Sprite player = db.getPlayer(playerName);
+        if(player == null){
+            System.out.println("New player! Creating player with name " + playerName);
+            db.savePlayer(playerName, 100, 0);
         } else {
-            System.out.println("Welcome back, " + playerName + "! Your health: " + playerHealth);
-            System.out.println("💰 You have " + playerCoins + " coins.");
+            System.out.println("Welcome back, " + playerName + "! Your health: " + player.getHealth());
+            System.out.println("💰 You have " + player.getCoins() + " coins.");
         }
 
         // Create player and enemy
-        Weapon sword = new Weapon(5, 15, 10, 20, "Sword");
-        Sprite player = new Sprite(playerName, playerHealth, sword);
-        player.setCoins(playerCoins); // Load coins into player object
-        enemy enemy = new enemy("Enemy", 80, sword);
-
+        enemy enemy = db.getRandomEnemy();
         Inventory in1 = new Inventory(player);
         Shop shop = new Shop(player); // link shop
         while(true) {
@@ -94,7 +87,7 @@ public class Main {
             }
 
             // Save final player state
-            MockDatabase.savePlayer(playerName, player.getHealth(), player.getCoins());
+            db.savePlayer(playerName, player.getHealth(), player.getCoins());
         }
         //scanner.close();
     }

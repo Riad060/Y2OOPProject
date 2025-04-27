@@ -16,7 +16,7 @@ public class DatabaseManager {
             ResultSet results = stmt.executeQuery();
 
             if(results.next()){
-                Weapon currnet = getWeapon(results.getInt("current_weapon"));
+                Weapon currnet = getWeapon(results.getString("current_weapon"));
                 if (currnet == null) {
                     //If somehow weapon is not found in the DB.
                     currnet = new Weapon(1, 1, 1, 1, "Fists");
@@ -33,13 +33,29 @@ public class DatabaseManager {
         }
     }
 
+    public enemy getRandomEnemy(){
+        try (Connection conn = DriverManager.getConnection(url, dbuser, dbpass)){
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM enemy ORDER BY RAND() LIMIT 1");
+            ResultSet results = stmt.executeQuery();
+
+            Weapon currnet = getWeapon(results.getString("current_weapon"));
+            int health = results.getInt("health");
+            String name = results.getString("name");
+            return new enemy(name, health, currnet);
+
+        } catch (Exception e){
+
+            return new enemy("Enemy", 80, getRandomWeapon());
+        }
+    }
 
 
 
-    public Weapon getWeapon(int weapon_id){
+
+    public Weapon getWeapon(String weapon_id){
         try (Connection conn = DriverManager.getConnection(url, dbuser, dbpass)){
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM weapon WHERE id = ?");
-            stmt.setInt(1, weapon_id);
+            stmt.setString(1, weapon_id);
             ResultSet results = stmt.executeQuery();
 
             if (results.next()){
