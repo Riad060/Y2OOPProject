@@ -4,7 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class DatabaseManager {
-    private String url = "jdbc:mysql://localhost:3306/OOPGame";
+    private String url = "jdbc:mysql://localhost:3306/oopgame";
     private String dbuser = "root";
     private String dbpass = "password";
 
@@ -54,7 +54,7 @@ public class DatabaseManager {
 
     public Weapon getWeapon(String weapon_id){
         try (Connection conn = DriverManager.getConnection(url, dbuser, dbpass)){
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM weapon WHERE id = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM weapon WHERE name = ?");
             stmt.setString(1, weapon_id);
             ResultSet results = stmt.executeQuery();
 
@@ -100,14 +100,14 @@ public class DatabaseManager {
     }
 
 
-    public int savePlayer(String player, int health, int coins){
+    public int savePlayer(String player, int health, int coins, Weapon current_weapon){
         try (Connection conn = DriverManager.getConnection(url, dbuser, dbpass)){
             PreparedStatement stmt = conn.prepareStatement("REPLACE INTO player VALUES (?, ?, ?, ?)");
             stmt.setString(1, player);
-            stmt.setInt(2, coins);
-            stmt.setInt(3, 1);
-            stmt.setInt(4, health);
-            stmt.executeQuery();
+            stmt.setInt(2, health);
+            stmt.setInt(3, coins);
+            stmt.setString(4, current_weapon.getName());
+            stmt.executeUpdate();
 
             return 1;
 

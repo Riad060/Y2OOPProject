@@ -1,6 +1,8 @@
+CREATE DATABASE  IF NOT EXISTS `oopgame` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `oopgame`;
 -- MySQL dump 10.13  Distrib 8.0.29, for Win64 (x86_64)
 --
--- Host: localhost    Database: oop_project
+-- Host: localhost    Database: oopgame
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -81,6 +83,7 @@ DROP TABLE IF EXISTS `player`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `player` (
   `user_name` varchar(40) NOT NULL,
+  `health` int NOT NULL,
   `coins` int NOT NULL,
   `current_weapon` varchar(30) NOT NULL,
   PRIMARY KEY (`user_name`),
@@ -95,7 +98,7 @@ CREATE TABLE `player` (
 
 LOCK TABLES `player` WRITE;
 /*!40000 ALTER TABLE `player` DISABLE KEYS */;
-INSERT INTO `player` VALUES ('OBrian',0,'Dagger'),('WSmith84',100,'Sword');
+INSERT INTO `player` VALUES ('Johm',100,0,'Sword'),('John',100,0,'Sword'),('OBrian',0,0,'Dagger'),('WSmith84',0,100,'Sword');
 /*!40000 ALTER TABLE `player` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +152,7 @@ CREATE TABLE `weapon` (
 
 LOCK TABLES `weapon` WRITE;
 /*!40000 ALTER TABLE `weapon` DISABLE KEYS */;
-INSERT INTO `weapon` VALUES ('Dagger',25,10,20,10,20),('Sword',50,20,25,10,50);
+INSERT INTO `weapon` VALUES ('Dagger',25,20,10,20,10),('Sword',50,25,20,30,20);
 /*!40000 ALTER TABLE `weapon` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -162,4 +165,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-16 13:08:36
+-- Dump completed on 2025-04-28 12:19:14
