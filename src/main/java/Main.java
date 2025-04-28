@@ -12,7 +12,8 @@ public class Main {
         Sprite player = db.getPlayer(playerName);
         if(player == null){
             System.out.println("New player! Creating player with name " + playerName);
-            db.savePlayer(playerName, 100, 0);
+            db.savePlayer(playerName, 100, 0, player.getWeapon());
+            player = new Sprite(playerName, 100 , db.getWeapon("Sword"));
         } else {
             System.out.println("Welcome back, " + playerName + "! Your health: " + player.getHealth());
             System.out.println("💰 You have " + player.getCoins() + " coins.");
@@ -87,7 +88,7 @@ public class Main {
             }
 
             // Save final player state
-            db.savePlayer(playerName, player.getHealth(), player.getCoins());
+            db.savePlayer(playerName, player.getHealth(), player.getCoins(), player.getWeapon());
         }
         //scanner.close();
     }

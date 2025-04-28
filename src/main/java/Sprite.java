@@ -16,6 +16,7 @@ public class Sprite {
     public void attack(enemy enemy, int move) {
         int damage;
         if (move == 1) {
+
             damage = weapon.getMove1Damage();
         } else {
             damage = weapon.getMove2Damage();
